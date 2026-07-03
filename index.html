@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CAM2COOK - Your Real-Time AI Sous-Chef</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-content">
+          <div class="logo">
+            <span class="logo-icon">📸</span>
+            <span class="logo-text">[ CAM2COOK ]</span>
+          </div>
+          <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#demo">Interactive Demo</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <button class="btn btn-primary">Join Early Access</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1>Don't Know What to Cook? Let Your Camera Decide.</h1>
+            <p>
+              Point your camera at your fridge or the ingredients you have, choose a recipe, and let our
+              real-time AI guide your hands through every step of the cooking
+              process.
+            </p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary">Try the Web Demo</button>
+              <button class="btn btn-secondary">Watch Video</button>
+            </div>
+          </div>
+          <div class="hero-animation">
+            <div class="animation-container">
+              <div class="scene scene-1 active">
+                <div class="fridge">
+                  <div class="fridge-door"></div>
+                  <div class="ingredient ingredient-1">🍅</div>
+                  <div class="ingredient ingredient-2">🍗</div>
+                  <div class="ingredient ingredient-3">🥬</div>
+                  <div class="scan-box"></div>
+                </div>
+                <div class="phone phone-1">
+                  <div class="phone-screen">Scanning...</div>
+                </div>
+                <div class="scene-label">STEP 1: SCAN</div>
+              </div>
+
+              <div class="scene scene-2">
+                <div class="recipe-cards">
+                  <div class="recipe-card">Pasta</div>
+                  <div class="recipe-card active-card">Tuscan Chicken</div>
+                  <div class="recipe-card">Stir Fry</div>
+                </div>
+                <div class="scene-label">STEP 2: DECIDE</div>
+              </div>
+
+              <div class="scene scene-3">
+                <div class="kitchen-counter">
+                  <div class="cutting-board">
+                    <div class="hands">✋</div>
+                  </div>
+                  <div class="stove">🍳</div>
+                </div>
+                <div class="phone phone-3">
+                  <div class="phone-screen">
+                    <div class="ar-guide">Chop into 1-inch cubes ✓</div>
+                  </div>
+                </div>
+                <div class="scene-label">STEP 3: GUIDE</div>
+              </div>
+            </div>
+            <div class="animation-dots">
+              <span class="dot active" data-scene="1"></span>
+              <span class="dot" data-scene="2"></span>
+              <span class="dot" data-scene="3"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <h2>Your Kitchen's Smartest Upgrade</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">👁️</div>
+            <h3>Smart Fridge Vision</h3>
+            <p>
+              Instantly identifies ingredients, quantities, and freshness just
+              by looking. No manual entry required.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3>Contextual Recipe Generation</h3>
+            <p>
+              Generates gourmet, healthy, or quick recipes based strictly on
+              what you already have. No grocery runs needed.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Live AR Cooking Guide</h3>
+            <p>
+              Places your phone on the counter. The AI watches your progress,
+              tells you when to flip the steak, and corrects your technique in
+              real-time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <h2>How It Works</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-number">1</div>
+            <div class="timeline-content">
+              <h3>The Scan</h3>
+              <p>
+                Point your camera at your fridge. Our AI instantly identifies
+                all ingredients with confidence scores, detecting everything
+                from fresh vegetables to pantry staples.
+              </p>
+              <div class="timeline-visual">📸 Scanning ingredients...</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-number">2</div>
+            <div class="timeline-content">
+              <h3>The Choice</h3>
+              <p>
+                Swipe through AI-generated recipes tailored to your ingredients.
+                Filter by cuisine, cooking time, dietary preference, or
+                difficulty level.
+              </p>
+              <div class="timeline-visual">🍳 Recipe selection...</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-number">3</div>
+            <div class="timeline-content">
+              <h3>The Setup</h3>
+              <p>
+                Place your phone on a tripod or propped up so the camera can see
+                your cutting board, stove, and hands. The AI begins calibration.
+              </p>
+              <div class="timeline-visual">📱 Setting up camera...</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-number">4</div>
+            <div class="timeline-content">
+              <h3>The Cook</h3>
+              <p>
+                Start cooking! The AI watches in real-time, guiding you through
+                each step. Get instant feedback on temperature, timing,
+                technique, and more.
+              </p>
+              <div class="timeline-visual">🔥 Real-time guidance...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section class="demo" id="demo">
+      <div class="container">
+        <h2>Experience the Real-Time AI Computer Vision</h2>
+        <div class="demo-content">
+          <div class="tablet-mockup">
+            <div class="tablet-frame">
+              <div class="tablet-screen" id="demoScreen">
+                <div class="demo-placeholder">
+                  <p>Click below to simulate camera feed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary demo-button" id="simulateBtn">
+            Simulate Camera Feed
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+      <div class="container">
+        <h2>Loved by Home Chefs</h2>
+        <div class="testimonials-carousel">
+          <div class="testimonial-card">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p>
+              "CAM2COOK literally saved my dinners. I just point my phone at my
+              random leftovers and it turns me into a Michelin chef."
+            </p>
+            <div class="testimonial-author">
+              <div class="avatar">👨‍🍳</div>
+              <div>
+                <strong>Marcus J.</strong>
+                <small>Food Enthusiast</small>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p>
+              "Finally, a cooking app that actually understands what I have at
+              home. The real-time guidance is a game-changer!"
+            </p>
+            <div class="testimonial-author">
+              <div class="avatar">👩‍💼</div>
+              <div>
+                <strong>Sarah M.</strong>
+                <small>Busy Professional</small>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p>
+              "My kids actually want to cook with me now. The AI is patient and
+              makes it fun!"
+            </p>
+            <div class="testimonial-author">
+              <div class="avatar">👨‍👩‍👧</div>
+              <div>
+                <strong>David K.</strong>
+                <small>Parent</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h3>Do I need a specific phone?</h3>
+            <p>
+              CAM2COOK works on any smartphone with a decent camera and internet
+              connection. iOS 13+ and Android 10+ recommended.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>How accurate is the ingredient detection?</h3>
+            <p>
+              Our AI achieves 98%+ accuracy on common ingredients. You can
+              manually add or adjust items if needed.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>Does it work with frozen or pre-packaged foods?</h3>
+            <p>
+              Yes! CAM2COOK recognizes all food types, including frozen items,
+              packaged goods, and fresh produce.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>Is my cooking process private?</h3>
+            <p>
+              Absolutely. The video feed is processed locally on your device. We
+              never store or share your cooking sessions.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I save my favorite recipes?</h3>
+            <p>
+              Yes, you can save, rate, and organize recipes. We'll learn your
+              preferences over time.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>What cuisines does CAM2COOK support?</h3>
+            <p>
+              Currently supporting 50+ cuisines with daily additions. Dietary
+              restrictions and allergies are fully supported.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta">
+      <div class="container">
+        <h2>Ready to Revolutionize Your Kitchen?</h2>
+        <div class="cta-form">
+          <input
+            type="email"
+            placeholder="Enter your email address"
+            class="email-input"
+          />
+          <button class="btn btn-primary">Get Notified</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+          </div>
+          <div class="footer-social">
+            <a href="#" class="social-icon">📸 Instagram</a>
+            <a href="#" class="social-icon">🎵 TikTok</a>
+            <a href="#" class="social-icon">📧 Contact</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            &copy; 2024 CAM2COOK. Transforming home cooking, one recipe at a
+            time.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
