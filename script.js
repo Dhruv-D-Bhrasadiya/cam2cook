@@ -41,8 +41,10 @@ startSceneAnimation();
 
 // Pause on hover, resume on mouse leave
 const animationContainer = document.querySelector(".animation-container");
-animationContainer.addEventListener("mouseenter", stopSceneAnimation);
-animationContainer.addEventListener("mouseleave", startSceneAnimation);
+if (animationContainer) {
+  animationContainer.addEventListener("mouseenter", stopSceneAnimation);
+  animationContainer.addEventListener("mouseleave", startSceneAnimation);
+}
 
 // Click dots to change scene
 dots.forEach((dot) => {
@@ -54,13 +56,46 @@ dots.forEach((dot) => {
   });
 });
 
+// ============ THEME TOGGLE ============
+const themeToggle = document.querySelector(".theme-toggle");
+const htmlElement = document.documentElement;
+
+// Initialize theme from localStorage
+function initTheme() {
+  const savedTheme = localStorage.getItem("cam2cook-theme") || "light";
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    themeToggle.textContent = "🌙";
+  } else {
+    document.body.classList.remove("light-mode");
+    themeToggle.textContent = "☀️";
+  }
+}
+
+// Toggle theme on button click
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const isLightMode = document.body.classList.toggle("light-mode");
+    localStorage.setItem("cam2cook-theme", isLightMode ? "light" : "dark");
+    themeToggle.textContent = isLightMode ? "🌙" : "☀️";
+    themeToggle.style.animation = "none";
+    setTimeout(() => {
+      themeToggle.style.animation = "";
+    }, 10);
+  });
+  
+  // Initialize theme on page load
+  initTheme();
+}
+
 // ============ DEMO SIMULATION ============
 const simulateBtn = document.getElementById("simulateBtn");
 const demoScreen = document.getElementById("demoScreen");
 
-simulateBtn.addEventListener("click", () => {
-  // Clear previous content
-  demoScreen.innerHTML = "";
+if (simulateBtn && demoScreen) {
+  simulateBtn.addEventListener("click", () => {
+    // Clear previous content
+    demoScreen.innerHTML = "";
 
   // Create demo video/content
   const demoContent = document.createElement("div");
@@ -141,7 +176,8 @@ simulateBtn.addEventListener("click", () => {
     demoScreen.innerHTML =
       '<div class="demo-placeholder"><p>Click below to simulate camera feed</p></div>';
   }, 5000);
-});
+  });
+}
 
 // ============ SMOOTH SCROLLING ============
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -161,7 +197,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 const emailInput = document.querySelector(".email-input");
 const getCTAButton = document.querySelector(".final-cta .btn-primary");
 
-if (getCTAButton) {
+if (getCTAButton && emailInput) {
   getCTAButton.addEventListener("click", () => {
     const email = emailInput.value.trim();
 
@@ -211,17 +247,19 @@ faqItems.forEach((item) => {
 const navbar = document.querySelector(".navbar");
 let lastScrollTop = 0;
 
-window.addEventListener("scroll", () => {
-  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+if (navbar) {
+  window.addEventListener("scroll", () => {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  if (scrollTop > 100) {
-    navbar.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.3)";
-  } else {
-    navbar.style.boxShadow = "none";
-  }
+    if (scrollTop > 100) {
+      navbar.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.3)";
+    } else {
+      navbar.style.boxShadow = "none";
+    }
 
-  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-});
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  });
+}
 
 // ============ INTERSECTION OBSERVER FOR ANIMATIONS ============
 const observerOptions = {

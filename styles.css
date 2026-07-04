@@ -15,6 +15,14 @@
   --transition: all 0.3s ease;
 }
 
+body.light-mode {
+  --background: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #666666;
+  --card-bg: rgba(255, 107, 107, 0.08);
+  --glass: rgba(79, 172, 196, 0.08);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -481,7 +489,7 @@ body {
 .animation-dots {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 3rem;
 }
 
@@ -492,15 +500,57 @@ body {
   background: rgba(255, 107, 107, 0.3);
   cursor: pointer;
   transition: var(--transition);
+  position: relative;
+  box-shadow: 0 0 0 2px transparent;
+}
+
+.dot::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(255, 107, 107, 0.2);
+  animation: dotPulse 2s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes dotPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
 }
 
 .dot.active {
   background: var(--primary);
   transform: scale(1.3);
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+}
+
+.dot.active::before {
+  animation: dotPulseActive 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulseActive {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
 }
 
 .dot:hover {
   background: var(--secondary);
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(78, 205, 196, 0.5);
 }
 
 /* ============ FEATURES SECTION ============ */
@@ -897,6 +947,126 @@ body {
   text-align: center;
   padding-top: 2rem;
   border-top: 1px solid rgba(79, 172, 196, 0.2);
+}
+
+/* ============ THEME TOGGLE ============ */
+.theme-toggle {
+  background: transparent;
+  border: 2px solid var(--secondary);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(78, 205, 196, 0.2);
+  transform: scale(1.1) rotate(20deg);
+}
+
+body.light-mode .theme-toggle {
+  border-color: var(--primary);
+}
+
+body.light-mode .theme-toggle::after {
+  content: '';
+}
+
+/* ============ PLACEHOLDER PAGES ============ */
+.page-content {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.placeholder-page {
+  width: 100%;
+}
+
+.placeholder-page h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.placeholder-text {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 3rem;
+}
+
+.coming-soon {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  border-radius: 20px;
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  backdrop-filter: blur(10px);
+}
+
+.coming-icon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  display: block;
+  animation: bounceIcon 2s ease-in-out infinite;
+}
+
+@keyframes bounceIcon {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.coming-soon h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.coming-soon p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.coming-soon .btn {
+  margin-top: 1rem;
+}
+
+/* ============ LIGHT MODE NAVBAR ============ */
+body.light-mode .navbar {
+  background: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+body.light-mode .logo {
+  color: var(--primary);
+}
+
+body.light-mode .nav-links a {
+  color: var(--text);
 }
 
 /* ============ RESPONSIVE ============ */
