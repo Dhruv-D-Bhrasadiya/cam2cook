@@ -7,40 +7,40 @@ CAM2COOK is a landing page and prototype experience for an AI-powered cooking as
 The project currently includes:
 
 - A polished landing page for the CAM2COOK concept
-- Animated hero sections for the core experience
+- An animated hero experience with scan, decide, and guide scenes
 - Feature, how-it-works, demo, testimonials, FAQ, and CTA sections
 - Placeholder pages for early access, demo, video, privacy, terms, and contact
 - Light/dark theme support with a toggle
 
 ## Project Structure
 
-- index.html — main landing page
-- styles.css — visual design, layout, animations, and theme styling
-- script.js — interactive behavior such as animations, theme switching, demo simulation, and smooth scrolling
-- early-access.html — placeholder early access page
-- demo.html — placeholder demo page
-- video.html — placeholder video page
-- privacy.html — privacy placeholder page
-- terms.html — terms placeholder page
-- contact.html — contact placeholder page
+The frontend now lives in the following folder:
+
+- [frontend/src/index.html](frontend/src/index.html) — main landing page
+- [frontend/src/css/styles.css](frontend/src/css/styles.css) — visual design, layout, animations, and theme styling
+- [frontend/src/js/script.js](frontend/src/js/script.js) — interactive behavior such as animations, theme switching, demo simulation, and smooth scrolling
+- [frontend/src/early-access.html](frontend/src/early-access.html) — placeholder early access page
+- [frontend/src/demo.html](frontend/src/demo.html) — placeholder demo page
+- [frontend/src/video.html](frontend/src/video.html) — placeholder video page
+- [frontend/src/privacy.html](frontend/src/privacy.html) — privacy placeholder page
+- [frontend/src/terms.html](frontend/src/terms.html) — terms placeholder page
+- [frontend/src/contact.html](frontend/src/contact.html) — contact placeholder page
 
 ## Run Locally
 
-You can open the website directly in your browser:
-
-1. Open [index.html](index.html) in a browser
-
-Or serve the folder locally with a simple server:
+From the repository root, start a simple local server:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then visit:
+Then open:
 
 ```text
-http://localhost:8000/
+http://localhost:8000/frontend/src/
 ```
+
+You can also open [frontend/src/index.html](frontend/src/index.html) directly in a browser.
 
 ## Tech Stack
 
