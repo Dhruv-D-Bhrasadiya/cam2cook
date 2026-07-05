@@ -505,7 +505,7 @@ body {
 }
 
 .dot::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;
@@ -975,7 +975,7 @@ body.light-mode .theme-toggle {
 }
 
 body.light-mode .theme-toggle::after {
-  content: '';
+  content: "";
 }
 
 /* ============ PLACEHOLDER PAGES ============ */
@@ -992,7 +992,7 @@ body.light-mode .theme-toggle::after {
 }
 
 .placeholder-page h1 {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 3rem;
   font-weight: 800;
   text-align: center;
@@ -1028,7 +1028,8 @@ body.light-mode .theme-toggle::after {
 }
 
 @keyframes bounceIcon {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -1037,7 +1038,7 @@ body.light-mode .theme-toggle::after {
 }
 
 .coming-soon h2 {
-  font-family: 'Outfit', sans-serif;
+  font-family: "Outfit", sans-serif;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;

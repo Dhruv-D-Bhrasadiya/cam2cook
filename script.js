@@ -83,7 +83,7 @@ if (themeToggle) {
       themeToggle.style.animation = "";
     }, 10);
   });
-  
+
   // Initialize theme on page load
   initTheme();
 }
@@ -97,9 +97,9 @@ if (simulateBtn && demoScreen) {
     // Clear previous content
     demoScreen.innerHTML = "";
 
-  // Create demo video/content
-  const demoContent = document.createElement("div");
-  demoContent.style.cssText = `
+    // Create demo video/content
+    const demoContent = document.createElement("div");
+    demoContent.style.cssText = `
         width: 100%;
         height: 100%;
         display: flex;
@@ -111,9 +111,9 @@ if (simulateBtn && demoScreen) {
         text-align: center;
     `;
 
-  // Simulate kitchen camera feed
-  const videoArea = document.createElement("div");
-  videoArea.style.cssText = `
+    // Simulate kitchen camera feed
+    const videoArea = document.createElement("div");
+    videoArea.style.cssText = `
         width: 100%;
         flex: 1;
         background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
@@ -127,8 +127,8 @@ if (simulateBtn && demoScreen) {
         overflow: hidden;
     `;
 
-  // Camera feed representation
-  videoArea.innerHTML = `
+    // Camera feed representation
+    videoArea.innerHTML = `
         <div style="text-align: center;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">📹</div>
             <p>Kitchen Camera Feed</p>
@@ -143,9 +143,9 @@ if (simulateBtn && demoScreen) {
         </div>
     `;
 
-  // AR Guidance overlay
-  const guidance = document.createElement("div");
-  guidance.style.cssText = `
+    // AR Guidance overlay
+    const guidance = document.createElement("div");
+    guidance.style.cssText = `
         width: 100%;
         background: rgba(79, 172, 196, 0.2);
         border: 2px solid #4ECDC4;
@@ -156,26 +156,26 @@ if (simulateBtn && demoScreen) {
         animation: slideUp 0.5s ease-out;
     `;
 
-  const guidanceText = [
-    "✓ Stove heat is perfect!",
-    "✓ Ingredients arranged correctly",
-    "✓ Hand position optimal",
-    "Next: Stir for 30 seconds",
-  ];
+    const guidanceText = [
+      "✓ Stove heat is perfect!",
+      "✓ Ingredients arranged correctly",
+      "✓ Hand position optimal",
+      "Next: Stir for 30 seconds",
+    ];
 
-  const randomGuidance =
-    guidanceText[Math.floor(Math.random() * guidanceText.length)];
-  guidance.textContent = randomGuidance;
+    const randomGuidance =
+      guidanceText[Math.floor(Math.random() * guidanceText.length)];
+    guidance.textContent = randomGuidance;
 
-  demoContent.appendChild(videoArea);
-  demoContent.appendChild(guidance);
-  demoScreen.appendChild(demoContent);
+    demoContent.appendChild(videoArea);
+    demoContent.appendChild(guidance);
+    demoScreen.appendChild(demoContent);
 
-  // Auto-dismiss after 5 seconds
-  setTimeout(() => {
-    demoScreen.innerHTML =
-      '<div class="demo-placeholder"><p>Click below to simulate camera feed</p></div>';
-  }, 5000);
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+      demoScreen.innerHTML =
+        '<div class="demo-placeholder"><p>Click below to simulate camera feed</p></div>';
+    }, 5000);
   });
 }
 
