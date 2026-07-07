@@ -16,3 +16,25 @@ All the model will be trained and no API's will be used, and will try to make it
 * Thinking of scraping the full dataset from the internet and storing it in kaggle/drive/roboflow (NOT DECIDED YET) 
 * This model should 
     - detect ingredients
+    - give weight
+    - give protein fats carbs, etc
+* Dataset should have image and label pair of all the food ingridents
+
+### 2. Reciep Model
+
+* Based on the ingredients give all the possible dishes that we can make 
+* Give rough time estimation to complete the suggested dishes
+* Give rough protein fats carbs consuption of the dishes
+* Give tools required to complete the dishes and also give alternative of the menstioned tool 
+
+### 3. Audio model 
+
+* Speak the reciep step
+
+### 4. VLA
+
+* Based on what the model can see help the user to cook
+* Start timers while cooking
+
+
+> NOTE :- All should be build from scratch or use a pre-trained model and fine-tune it according to the need
