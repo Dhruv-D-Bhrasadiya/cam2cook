@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:password@db:5432/cam2cook
+      - JWT_SECRET=${JWT_SECRET:-local-development-secret-change-me}
+      - SEED_USER_NAME=${SEED_USER_NAME:-Cam2Cook Admin}
+      - SEED_USER_EMAIL=${SEED_USER_EMAIL:-admin@cam2cook.com}
+      - SEED_USER_PASSWORD=${SEED_USER_PASSWORD:-Admin123.}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=cam2cook
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d cam2cook"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
