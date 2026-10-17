@@ -514,7 +514,10 @@ private fun RecognitionScreen(inventory: List<FoodItem>, onBack: () -> Unit, onS
                 Spacer(Modifier.height(10.dp))
             }
             items(detections, key = { it.id }) { item ->
-                CardBlock(Modifier.fillMaxWidth().clickable { item.checked = !item.checked }) {
+                CardBlock(Modifier.fillMaxWidth().clickable {
+                    val index = detections.indexOfFirst { it.id == item.id }
+                    if (index >= 0) detections[index] = item.copy(checked = !item.checked)
+                }) {
                     Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                         Surface(color = if (item.checked) Teal.copy(alpha = .16f) else Ink, shape = CircleShape, modifier = Modifier.size(34.dp)) {
                             Box(contentAlignment = Alignment.Center) { Icon(if (item.checked) Icons.Default.Check else Icons.Default.Add, contentDescription = if (item.checked) "Selected" else "Not selected", tint = if(item.checked) Teal else TextMuted) }
