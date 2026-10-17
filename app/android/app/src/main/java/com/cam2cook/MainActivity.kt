@@ -54,6 +54,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -68,8 +69,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
+import kotlinx.coroutines.delay
 
 private val Ink = Color(0xFF090E17)
 private val CardInk = Color(0xFF172138)
@@ -603,6 +603,14 @@ private fun RecipesScreen(inventory: List<FoodItem>, onCook: (Recipe) -> Unit, o
 @Composable
 private fun CookScreen(recipe: Recipe, step: Int, onBack: () -> Unit, onNext: () -> Unit, onPrevious: () -> Unit) {
     var timerSeconds by remember(recipe.name, step) { mutableStateOf(0) }
+    var timerRunning by remember(recipe.name, step) { mutableStateOf(false) }
+    LaunchedEffect(timerRunning, recipe.name, step) {
+        while (timerRunning && timerSeconds > 0) {
+            delay(1_000)
+            timerSeconds = (timerSeconds - 1).coerceAtLeast(0)
+        }
+        if (timerSeconds == 0) timerRunning = false
+    }
     AppScaffold(null, onNavigate = { destination -> if(destination == Destination.Home) onBack() }) {
         LazyColumn(Modifier.fillMaxSize().padding(horizontal = 20.dp), contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 22.dp, bottom = 22.dp)) {
             item {
@@ -652,8 +660,11 @@ private fun CookScreen(recipe: Recipe, step: Int, onBack: () -> Unit, onNext: ()
                             Text("${timerSeconds / 60}:${(timerSeconds % 60).toString().padStart(2, '0')}", color = Teal, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         }
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            listOf(60, 180, 300).forEach { seconds -> TextButton(onClick = { timerSeconds = seconds }) { Text("${seconds / 60} min", color = Teal) } }
-                            TextButton(onClick = { timerSeconds = 0 }) { Text("Reset", color = TextMuted) }
+                            listOf(60, 180, 300).forEach { seconds ->
+                                TextButton(onClick = { timerSeconds = seconds; timerRunning = false }) { Text("${seconds / 60} min", color = Teal) }
+                            }
+                            TextButton(onClick = { timerRunning = !timerRunning && timerSeconds > 0 }) { Text(if (timerRunning) "Pause" else "Start", color = Teal) }
+                            TextButton(onClick = { timerRunning = false; timerSeconds = 0 }) { Text("Reset", color = TextMuted) }
                         }
                     }
                 }
@@ -792,14 +803,14 @@ private fun EmptyState(title: String, detail: String, onAction: () -> Unit) {
     }
 }
 
-private fun statusColor(daysLeft: Int): Color = when {
+internal fun statusColor(daysLeft: Int): Color = when {
     daysLeft <= 0 -> RedSoft
     daysLeft <= 1 -> Amber
     daysLeft <= 3 -> Teal
     else -> Teal
 }
 
-private fun deadlineLabel(daysLeft: Int): String = when {
+internal fun deadlineLabel(daysLeft: Int): String = when {
     daysLeft < 0 -> "Review date"
     daysLeft == 0 -> "Today"
     daysLeft == 1 -> "1 day left"
