@@ -480,12 +480,12 @@ private fun ScanCorner(modifier: Modifier = Modifier) {
 @Composable
 private fun RecognitionScreen(inventory: List<FoodItem>, onBack: () -> Unit, onSave: (List<FoodItem>) -> Unit) {
     val detections = remember {
-        listOf(
+        mutableStateListOf(
             FoodItem(101, "Tomatoes", "🍅", "3 pieces", "Fridge", 4, 96),
             FoodItem(102, "Spinach", "🥬", "1 bunch", "Fridge", 1, 92),
             FoodItem(103, "Milk", "🥛", "1 L", "Fridge", 1, 98),
             FoodItem(104, "Onion", "🧅", "2 pieces", "Pantry", 8, 91)
-        ).toMutableStateList()
+        )
     }
     AppScaffold(Destination.Inventory, onNavigate = { destination -> if (destination == Destination.Home) onBack() }) {
         LazyColumn(Modifier.fillMaxSize().padding(horizontal = 20.dp), contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 24.dp, bottom = 24.dp)) {
