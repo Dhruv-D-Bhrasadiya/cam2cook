@@ -2,6 +2,7 @@ package com.cam2cook
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,10 +55,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -89,6 +92,8 @@ class MainActivity : ComponentActivity() {
 }
 
 private enum class Destination { Welcome, Login, SignUp, Home, Inventory, Scan, Recognition, Recipes, Cook, More }
+
+private val LocalAppNavigate = staticCompositionLocalOf<(Destination) -> Unit> { {} }
 
 private data class FoodItem(
     val id: Int,
@@ -140,10 +145,22 @@ private fun Cam2CookApp() {
     var filter by remember { mutableStateOf("All") }
     var currentStep by remember { mutableStateOf(0) }
 
+    // Device back navigates through the app instead of finishing the activity.
+    BackHandler {
+        destination = when (destination) {
+            Destination.Login, Destination.SignUp -> Destination.Welcome
+            Destination.Recognition -> Destination.Scan
+            Destination.Scan, Destination.Inventory, Destination.Recipes, Destination.More -> Destination.Home
+            Destination.Cook -> Destination.Recipes
+            Destination.Home, Destination.Welcome -> destination
+        }
+    }
+
     MaterialTheme(colorScheme = darkColorScheme(
         primary = Primary, secondary = Teal, background = Ink, surface = CardInk,
         onPrimary = TextMain, onSecondary = Ink, onBackground = TextMain, onSurface = TextMain
     )) {
+        CompositionLocalProvider(LocalAppNavigate provides { target -> destination = target }) {
         Surface(modifier = Modifier.fillMaxSize(), color = Ink) {
             when (destination) {
                 Destination.Welcome -> WelcomeScreen(
@@ -215,6 +232,7 @@ private fun Cam2CookApp() {
                     }
                 }
             }
+        }
         }
     }
 }
@@ -717,6 +735,7 @@ private fun AppScaffold(
     onNavigate: (Destination) -> Unit,
     content: @Composable () -> Unit
 ) {
+    val navigate = LocalAppNavigate.current
     Scaffold(
         containerColor = Ink,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -725,11 +744,11 @@ private fun AppScaffold(
                 Column(Modifier.fillMaxWidth().background(Ink).windowInsetsPadding(WindowInsets.navigationBars)) {
                     Divider(color = Color(0xFF29384F), thickness = 1.dp)
                     Row(Modifier.fillMaxWidth().height(58.dp), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
-                        NavItem("Home", "⌂", current == Destination.Home) { onNavigate(Destination.Home) }
-                        NavItem("Inventory", "▦", current == Destination.Inventory) { onNavigate(Destination.Inventory) }
-                        NavItem("Scan", "＋", current == Destination.Scan) { onNavigate(Destination.Scan) }
-                        NavItem("Recipes", "◉", current == Destination.Recipes) { onNavigate(Destination.Recipes) }
-                        NavItem("More", "☰", current == Destination.More) { onNavigate(Destination.More) }
+                        NavItem("Home", "⌂", current == Destination.Home) { navigate(Destination.Home) }
+                        NavItem("Inventory", "▦", current == Destination.Inventory) { navigate(Destination.Inventory) }
+                        NavItem("Scan", "＋", current == Destination.Scan) { navigate(Destination.Scan) }
+                        NavItem("Recipes", "◉", current == Destination.Recipes) { navigate(Destination.Recipes) }
+                        NavItem("More", "☰", current == Destination.More) { navigate(Destination.More) }
                     }
                 }
             }
