@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private enum class Destination { Welcome, Login, SignUp, Home, Inventory, Scan, Recognition, Recipes, Cook, More }
+private enum class Destination { Welcome, Login, SignUp, ForgotPassword, ResetSuccess, Home, Inventory, FoodDetail, Scan, Recognition, Recipes, Cook, ShoppingList, Notifications, Household, Settings, More }
 
 private val LocalAppNavigate = staticCompositionLocalOf<(Destination) -> Unit> { {} }
 
@@ -160,8 +160,11 @@ private fun Cam2CookApp() {
     // Device back navigates through the app instead of finishing the activity.
     BackHandler {
         destination = when (destination) {
-            Destination.Login, Destination.SignUp -> Destination.Welcome
+            Destination.Login, Destination.SignUp, Destination.ForgotPassword -> Destination.Welcome
+            Destination.ResetSuccess -> Destination.Login
             Destination.Recognition -> Destination.Scan
+            Destination.FoodDetail -> Destination.Inventory
+            Destination.ShoppingList, Destination.Notifications, Destination.Household, Destination.Settings -> Destination.More
             Destination.Scan, Destination.Inventory, Destination.Recipes, Destination.More -> Destination.Home
             Destination.Cook -> Destination.Recipes
             Destination.Home, Destination.Welcome -> destination
@@ -194,6 +197,44 @@ private fun Cam2CookApp() {
                     message = message,
                     onMessageShown = { message = null },
                     onSwitch = { destination = if (destination == Destination.Login) Destination.SignUp else Destination.Login }
+                )
+                Destination.ForgotPassword -> UtilityScreen(
+                    title = "Reset password", subtitle = "Enter your email and we’ll show the next step.",
+                    primaryAction = "Send reset link", onPrimary = { destination = Destination.ResetSuccess },
+                    secondaryAction = "Back to sign in", onSecondary = { destination = Destination.Login },
+                    fields = listOf("Email address")
+                )
+                Destination.ResetSuccess -> UtilityScreen(
+                    title = "Check your inbox", subtitle = "If an account exists for that email, password-reset instructions will be sent when authentication is connected.",
+                    primaryAction = "Back to sign in", onPrimary = { destination = Destination.Login }
+                )
+                Destination.FoodDetail -> FoodDetailScreen(
+                    item = inventory.firstOrNull() ?: starterFood.first(),
+                    onBack = { destination = Destination.Inventory },
+                    onSave = { message = "Food details saved in this demo session."; destination = Destination.Inventory }
+                )
+                Destination.ShoppingList -> UtilityScreen(
+                    title = "Shopping list", subtitle = "Keep a short list of ingredients to pick up.",
+                    primaryAction = "Add sample essentials", onPrimary = { message = "Milk, eggs and fresh greens added to your demo list." },
+                    secondaryAction = "Back to home", onSecondary = { destination = Destination.Home },
+                    bullets = listOf("Milk", "Eggs", "Fresh greens")
+                )
+                Destination.Notifications -> UtilityScreen(
+                    title = "Notifications", subtitle = "Your kitchen reminders at a glance.",
+                    primaryAction = "Mark all as read", onPrimary = { message = "Notifications marked as read." },
+                    bullets = listOf("Use spinach today", "Milk is nearing its estimated date", "Your weekly kitchen summary is ready")
+                )
+                Destination.Household -> UtilityScreen(
+                    title = "Your household", subtitle = "Share kitchen planning with people at home.",
+                    primaryAction = "Create household", onPrimary = { message = "Household setup is ready to connect to an account service." },
+                    secondaryAction = "Back to You", onSecondary = { destination = Destination.More },
+                    bullets = listOf("Invite a partner or housemate", "Shared fridge and pantry", "One shopping list for everyone")
+                )
+                Destination.Settings -> UtilityScreen(
+                    title = "Settings", subtitle = "Manage your Cam2Cook experience.",
+                    primaryAction = "Save preferences", onPrimary = { message = "Preferences saved for this demo session." },
+                    secondaryAction = "Back to You", onSecondary = { destination = Destination.More },
+                    bullets = listOf("Freshness reminder preferences", "Measurement units · metric", "Privacy and data controls", "Food safety information")
                 )
                 Destination.Home -> HomeScreen(inventory,
                     onScan = { destination = Destination.Scan },
@@ -229,7 +270,11 @@ private fun Cam2CookApp() {
                 )
                 Destination.More -> MoreScreen(userName, email,
                     onBack = { destination = Destination.Home },
-                    onLogout = { destination = Destination.Welcome; password = ""; message = null }
+                    onLogout = { destination = Destination.Welcome; password = ""; message = null },
+                    onShoppingList = { destination = Destination.ShoppingList },
+                    onNotifications = { destination = Destination.Notifications },
+                    onHousehold = { destination = Destination.Household },
+                    onSettings = { destination = Destination.Settings }
                 )
             }
             if (message != null && destination != Destination.Login && destination != Destination.SignUp) {
@@ -336,6 +381,11 @@ private fun AuthScreen(
         PrimaryButton(if (isSignUp) "Create account" else "Login", onSubmit)
         TextButton(onClick = onSwitch, modifier = Modifier.fillMaxWidth()) {
             Text(if (isSignUp) "Already have an account? Login" else "New here? Create an account", color = Teal)
+        }
+        if (!isSignUp) {
+            TextButton(onClick = { LocalAppNavigate.current(Destination.ForgotPassword) }, modifier = Modifier.fillMaxWidth()) {
+                Text("Forgot password?", color = Teal)
+            }
         }
         Text("Authentication connects to the Cam2Cook API when configured.", color = TextMuted, fontSize = 11.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(top = 12.dp))
     }
@@ -774,7 +824,8 @@ private fun CookScreen(recipe: Recipe, step: Int, onBack: () -> Unit, onNext: ()
 }
 
 @Composable
-private fun MoreScreen(name: String, email: String, onBack: () -> Unit, onLogout: () -> Unit) {
+private fun MoreScreen(name: String, email: String, onBack: () -> Unit, onLogout: () -> Unit,
+    onShoppingList: () -> Unit, onNotifications: () -> Unit, onHousehold: () -> Unit, onSettings: () -> Unit) {
     AppScaffold(Destination.More, onNavigate = { if (it == Destination.Home) onBack() }) {
         Column(Modifier.fillMaxSize().padding(24.dp)) {
             Text("More", color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.Bold)
@@ -793,10 +844,88 @@ private fun MoreScreen(name: String, email: String, onBack: () -> Unit, onLogout
                 }
             }
             Spacer(Modifier.height(12.dp))
+            listOf(
+                "Shopping list" to onShoppingList,
+                "Notifications" to onNotifications,
+                "Household sharing" to onHousehold,
+                "Settings & preferences" to onSettings
+            ).forEach { (label, action) ->
+                CardBlock(Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                    Row(Modifier.fillMaxWidth().clickable(onClick = action).padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(label, color = TextMain, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                        Text("›", color = Primary, fontSize = 22.sp)
+                    }
+                }
+            }
             SecondaryButton("Back to home", onBack)
             Spacer(Modifier.height(10.dp))
             Button(onClick = onLogout, modifier = Modifier.fillMaxWidth().height(52.dp), colors = ButtonDefaults.buttonColors(containerColor = CardInk, contentColor = RedSoft), shape = RoundedCornerShape(14.dp)) { Text("Log out") }
         }
+    }
+}
+
+
+@Composable
+private fun UtilityScreen(
+    title: String, subtitle: String, primaryAction: String, onPrimary: () -> Unit,
+    secondaryAction: String? = null, onSecondary: (() -> Unit)? = null,
+    bullets: List<String> = emptyList(), fields: List<String> = emptyList()
+) {
+    Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.Top) {
+        IconButton(onClick = { LocalAppNavigate.current(Destination.More) }) {
+            Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextMain)
+        }
+        Spacer(Modifier.height(18.dp))
+        Text(title, color = TextMain, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(8.dp))
+        Text(subtitle, color = TextMuted, fontSize = 14.sp, lineHeight = 21.sp)
+        Spacer(Modifier.height(24.dp))
+        fields.forEach { field ->
+            var value by remember(field) { mutableStateOf("") }
+            OutlinedTextField(value = value, onValueChange = { value = it }, label = { Text(field) },
+                modifier = Modifier.fillMaxWidth(), singleLine = true,
+                keyboardOptions = if (field.contains("email", true)) KeyboardOptions(keyboardType = KeyboardType.Email) else KeyboardOptions.Default)
+            Spacer(Modifier.height(12.dp))
+        }
+        bullets.forEach { bullet ->
+            CardBlock(Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text("•", color = Primary, fontSize = 22.sp)
+                    Spacer(Modifier.width(12.dp))
+                    Text(bullet, color = TextMain, fontSize = 14.sp)
+                }
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        PrimaryButton(primaryAction, onPrimary)
+        if (secondaryAction != null && onSecondary != null) {
+            Spacer(Modifier.height(8.dp))
+            SecondaryButton(secondaryAction, onSecondary)
+        }
+    }
+}
+
+@Composable
+private fun FoodDetailScreen(item: FoodItem, onBack: () -> Unit, onSave: () -> Unit) {
+    var quantity by remember(item.id) { mutableStateOf(item.quantity) }
+    var location by remember(item.id) { mutableStateOf(item.location) }
+    Column(Modifier.fillMaxSize().padding(24.dp)) {
+        IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextMain) }
+        Spacer(Modifier.height(12.dp))
+        Box(Modifier.fillMaxWidth().height(160.dp).background(Mint, RoundedCornerShape(22.dp)), contentAlignment = Alignment.Center) {
+            Text(item.emoji, fontSize = 76.sp)
+        }
+        Spacer(Modifier.height(20.dp))
+        Text(item.name, color = TextMain, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Text(deadlineLabel(item.daysLeft), color = statusColor(item.daysLeft), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+        Spacer(Modifier.height(20.dp))
+        OutlinedTextField(value = quantity, onValueChange = { quantity = it }, label = { Text("Quantity") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+        Spacer(Modifier.height(12.dp))
+        OutlinedTextField(value = location, onValueChange = { location = it }, label = { Text("Storage location") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+        Spacer(Modifier.height(16.dp))
+        Text("Freshness dates are estimates, not a food-safety guarantee. Check packaging and use your judgement.", color = TextMuted, fontSize = 12.sp, lineHeight = 18.sp)
+        Spacer(Modifier.weight(1f))
+        PrimaryButton("Save changes", onSave)
     }
 }
 

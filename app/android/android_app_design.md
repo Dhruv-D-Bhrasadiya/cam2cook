@@ -42,8 +42,11 @@ Design for Samsung Galaxy S-series Android phones in portrait orientation. Use a
 - Scan/review: capture entry point, sample recognition preview, editable detected items, save to inventory.
 - Recipes: search/filter, ingredient context and Cook now.
 - Cook Mode: current step, progress, timer and completion actions.
-- You/settings: profile, safety notes and sign out.
+- You/settings: profile, safety notes, sign out, settings and preferences.
+- Account recovery: forgot-password form and reset confirmation state.
+- Food detail/edit: quantity, storage location, estimated freshness and save action.
+- Shopping list, notifications, household sharing and settings pages, accessible from You.
 
 ## Scope note
 
-CameraX capture, live AI, API-backed auth, remote recipe generation and durable persistence are separate integration tasks; the current slice retains clearly labeled demo behavior.
+CameraX capture, live AI, API-backed auth, remote recipe generation and durable persistence are separate integration tasks; secondary pages are implemented as usable demo flows and are ready for service integration.
