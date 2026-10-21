@@ -53,7 +53,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -74,19 +74,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
-private val Ink = Color(0xFF090E17)
-private val CardInk = Color(0xFF172138)
-private val Primary = Color(0xFFFF0040)
-private val Teal = Color(0xFF4ECDC4)
-private val Cyan = Color(0xFF00BBFF)
-private val TextMain = Color(0xFFF8FAFC)
-private val TextMuted = Color(0xFFCBD5E0)
-private val Amber = Color(0xFFFFB047)
-private val RedSoft = Color(0xFFFF6B6B)
+// CAM2COOK Samsung Galaxy / One UI palette adapted from the iOS reference.
+private val Ink = Color(0xFFF2F2F7)
+private val CardInk = Color(0xFFFFFFFF)
+private val Primary = Color(0xFF0B6B4F)
+private val Teal = Color(0xFF18A874)
+private val Cyan = Color(0xFF0B6B4F)
+private val TextMain = Color(0xFF0B1410)
+private val TextMuted = Color(0xFF5A6861)
+private val Amber = Color(0xFF966400)
+private val RedSoft = Color(0xFFB4233A)
+private val Border = Color(0xFFE3E3E8)
+private val Mint = Color(0xFFD1F2DE)
+private val PaleGreen = Color(0xFFE8F7EB)
+private val WarmPink = Color(0xFFFCA6B0)
+private val WarmYellow = Color(0xFFFCE58A)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = android.graphics.Color.rgb(242, 242, 247)
+        window.navigationBarColor = android.graphics.Color.rgb(242, 242, 247)
+        @Suppress("DEPRECATION")
+        window.decorView.systemUiVisibility =
+            android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
+                android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         setContent { Cam2CookApp() }
     }
 }
@@ -156,9 +168,9 @@ private fun Cam2CookApp() {
         }
     }
 
-    MaterialTheme(colorScheme = darkColorScheme(
+    MaterialTheme(colorScheme = lightColorScheme(
         primary = Primary, secondary = Teal, background = Ink, surface = CardInk,
-        onPrimary = TextMain, onSecondary = Ink, onBackground = TextMain, onSurface = TextMain
+        onPrimary = Color.White, onSecondary = Color.White, onBackground = TextMain, onSurface = TextMain
     )) {
         CompositionLocalProvider(LocalAppNavigate provides { target -> destination = target }) {
         Surface(modifier = Modifier.fillMaxSize(), color = Ink) {
@@ -243,21 +255,55 @@ private fun WelcomeScreen(onLogin: () -> Unit, onSignUp: () -> Unit) {
         modifier = Modifier.fillMaxSize().background(Ink).padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(110.dp))
-        Box(Modifier.size(124.dp).background(Primary, CircleShape), contentAlignment = Alignment.Center) { Text("🍳", fontSize = 58.sp) }
-        Spacer(Modifier.height(28.dp))
-        Text("CAM2COOK", color = TextMain, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+        Spacer(Modifier.height(46.dp))
+        // Native Compose illustration inspired by the fridge-and-produce source design.
+        Box(
+            Modifier.fillMaxWidth().height(300.dp).background(Mint, RoundedCornerShape(25.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                Modifier.padding(16.dp).fillMaxWidth(.66f).background(Color.White, RoundedCornerShape(22.dp)).padding(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(
+                    Modifier.fillMaxWidth().background(PaleGreen, RoundedCornerShape(14.dp)).padding(vertical = 14.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("🍅", fontSize = 28.sp)
+                    Text("🥬", fontSize = 28.sp)
+                    Text("🍋", fontSize = 28.sp)
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    Modifier.fillMaxWidth().background(PaleGreen, RoundedCornerShape(14.dp)).padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Text("🥛", fontSize = 30.sp)
+                    Text("🥚", fontSize = 30.sp)
+                    Text("🧀", fontSize = 30.sp)
+                }
+            }
+        }
         Spacer(Modifier.height(14.dp))
-        Text("See what you have.\nKnow when to use it.", color = TextMain, fontSize = 24.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center, lineHeight = 30.sp)
-        Spacer(Modifier.height(14.dp))
-        Text("Scan your fridge or groceries and let AI turn what you already have into your next meal.", color = TextMuted, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 21.sp)
+        Surface(color = Color.White, shape = RoundedCornerShape(13.dp)) {
+            Text("LESS WASTE, MORE FLAVOUR", color = Primary, fontSize = 11.sp, fontWeight = FontWeight.Bold,
+                letterSpacing = .6.sp, modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp))
+        }
+        Spacer(Modifier.height(22.dp))
+        Text("Your kitchen, with a little more magic.", color = TextMain, fontSize = 29.sp,
+            fontWeight = FontWeight.ExtraBold, lineHeight = 34.sp, textAlign = TextAlign.Start,
+            modifier = Modifier.fillMaxWidth())
+        Spacer(Modifier.height(12.dp))
+        Text("Scan what you have. Find what to cook. Feel good about every ingredient.",
+            color = TextMuted, fontSize = 15.sp, lineHeight = 21.sp, textAlign = TextAlign.Start,
+            modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.weight(1f))
-        PrimaryButton("Login", onLogin)
-        Spacer(Modifier.height(14.dp))
-        SecondaryButton("Sign Up", onSignUp)
-        Spacer(Modifier.height(34.dp))
-        Text("Your estimates are editable and never replace package labels or food-safety guidance.", color = TextMuted, fontSize = 10.sp, textAlign = TextAlign.Center, lineHeight = 14.sp)
-        Spacer(Modifier.height(24.dp))
+        PrimaryButton("Get started", onSignUp)
+        TextButton(onClick = onLogin, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+            Text("Already have an account?  Sign in", color = TextMuted, fontSize = 13.sp)
+        }
+        Spacer(Modifier.height(18.dp))
     }
 }
 
@@ -304,61 +350,86 @@ private fun HomeScreen(
         Destination.Home -> {}; Destination.Inventory -> onInventory(); Destination.Scan -> onScan()
         Destination.Recipes -> onRecipes(); Destination.More -> onMore(); else -> {}
     } }) {
-        LazyColumn(Modifier.fillMaxSize().padding(horizontal = 20.dp), contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 28.dp, bottom = 22.dp)) {
+        LazyColumn(Modifier.fillMaxSize().background(Ink).padding(horizontal = 20.dp), contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 24.dp, bottom = 24.dp)) {
             item {
-                Text("Good evening 👋", color = TextMuted, fontSize = 14.sp)
-                Spacer(Modifier.height(7.dp))
-                Text("Attention!", color = TextMain, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(14.dp))
-                CardBlock(Modifier.fillMaxWidth(), Primary) {
-                    Column(Modifier.padding(16.dp)) {
-                        Text("USE SOON", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = TextMain, letterSpacing = 1.sp)
-                        Text("${inventory.count { it.daysLeft <= 1 }} items need attention", color = TextMain, fontSize = 21.sp, fontWeight = FontWeight.Bold)
-                        Text(inventory.filter { it.daysLeft <= 1 }.joinToString(" • ") { it.name }.ifEmpty { "You're all caught up!" }, color = TextMain, fontSize = 12.sp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Good morning, ${userName.ifBlank { "Chef" }} 👋", color = TextMain, fontSize = 23.sp, fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.height(4.dp))
+                        Text("Let's make the most of your kitchen.", color = TextMuted, fontSize = 13.sp)
+                    }
+                    Box(Modifier.size(44.dp).background(Mint, CircleShape), contentAlignment = Alignment.Center) {
+                        Text(userName.firstOrNull()?.uppercase() ?: "C", color = Primary, fontWeight = FontWeight.Bold, fontSize = 17.sp)
                     }
                 }
                 Spacer(Modifier.height(18.dp))
-                Text("Quick actions", color = TextMain, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                Spacer(Modifier.height(12.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(9.dp), modifier = Modifier.fillMaxWidth()) {
-                    QuickAction("📷", "Scan food", "Add from camera", onScan, Modifier.weight(1f))
-                    QuickAction("🍳", "Cook", "Start with your food", onCook, Modifier.weight(1f))
-                    QuickAction("🛒", "Shopping", "What’s missing", onInventory, Modifier.weight(1f))
-                }
-                Spacer(Modifier.height(20.dp))
-                Text("Your kitchen", color = TextMain, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                Spacer(Modifier.height(12.dp))
-                CardBlock(Modifier.fillMaxWidth()) {
-                    Column(Modifier.padding(16.dp)) {
+                CardBlock(Modifier.fillMaxWidth(), Primary) {
+                    Column(Modifier.padding(18.dp)) {
+                        Text("YOUR KITCHEN, AT A GLANCE", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Mint, letterSpacing = .7.sp)
+                        Spacer(Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("${inventory.size}", color = Teal, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-                            Spacer(Modifier.width(8.dp))
-                            Text("items tracked", color = TextMuted, fontSize = 13.sp)
+                            Text("What can we make with what you have?", color = Color.White, fontSize = 21.sp,
+                                fontWeight = FontWeight.Bold, lineHeight = 25.sp, modifier = Modifier.weight(1f))
+                            Surface(color = Teal, shape = CircleShape, modifier = Modifier.size(44.dp).clickable(onClick = onScan)) {
+                                Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.CameraAlt, contentDescription = "Scan ingredients", tint = Color.White) }
+                            }
                         }
-                        Spacer(Modifier.height(12.dp))
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Stat("${inventory.count { it.daysLeft > 3 }}", "fresh", TextMain)
-                            Stat("${inventory.count { it.daysLeft in 2..3 }}", "use soon", Amber)
-                            Stat("${inventory.count { it.daysLeft <= 1 }}", "at risk", RedSoft)
+                        Spacer(Modifier.height(14.dp))
+                        Button(onClick = onScan, colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Primary),
+                            shape = RoundedCornerShape(13.dp)) {
+                            Icon(Icons.Default.CameraAlt, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text("Scan ingredients", fontWeight = FontWeight.Bold)
                         }
                     }
                 }
-                Spacer(Modifier.height(20.dp))
-                Text("Recommended for you", color = TextMain, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Use these first", color = TextMain, fontWeight = FontWeight.Bold, fontSize = 19.sp, modifier = Modifier.weight(1f))
+                    TextButton(onClick = onInventory) { Text("See all", color = Primary) }
+                }
+                val atRisk = inventory.filter { it.daysLeft <= 1 }.take(3)
+                if (atRisk.isEmpty()) {
+                    CardBlock(Modifier.fillMaxWidth()) {
+                        Text("You're all caught up. Your kitchen is looking fresh!", color = TextMuted, fontSize = 13.sp, modifier = Modifier.padding(16.dp))
+                    }
+                } else {
+                    atRisk.forEach { food ->
+                        Row(Modifier.fillMaxWidth().padding(bottom = 8.dp).background(CardInk, RoundedCornerShape(12.dp)).padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(50.dp).background(if (food.daysLeft <= 0) WarmPink else Mint, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
+                                Text(food.emoji, fontSize = 25.sp)
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(food.name, color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                                Text("${deadlineLabel(food.daysLeft)} · ${food.quantity}", color = TextMuted, fontSize = 12.sp)
+                            }
+                            Surface(color = if (food.daysLeft <= 0) WarmPink else WarmYellow, shape = RoundedCornerShape(13.dp)) {
+                                Text(if (food.daysLeft <= 0) "TODAY" else "SOON",
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                    color = if (food.daysLeft <= 0) Color(0xFF7A1429) else Primary, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                }
+                Spacer(Modifier.height(14.dp))
+                Text("A smart match for you", color = TextMain, fontWeight = FontWeight.Bold, fontSize = 19.sp)
+                Spacer(Modifier.height(10.dp))
                 CardBlock(Modifier.fillMaxWidth()) {
-                    Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text("🍗", fontSize = 28.sp)
+                    Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(78.dp).background(Mint, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) { Text("🍲", fontSize = 36.sp) }
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
-                            Text("20-min Chicken Stir-Fry", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                            Text("Uses food that needs attention", color = TextMuted, fontSize = 11.sp)
+                            Text("Garlic butter chicken", color = TextMain, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            Text("Uses ${inventory.count { it.daysLeft <= 1 }} items at risk", color = Primary, fontSize = 12.sp)
+                            Text("25 min · Easy", color = TextMuted, fontSize = 12.sp)
+                            TextButton(onClick = onRecipes, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) { Text("View recipe →", color = Primary) }
                         }
-                        Button(onClick = onCook, colors = ButtonDefaults.buttonColors(containerColor = Cyan, contentColor = Ink), contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 6.dp)) { Text("Cook", fontSize = 12.sp) }
                     }
                 }
-                Spacer(Modifier.height(12.dp))
-                Text("Tip: tap an item to edit quantity, dates, or storage.", color = TextMuted, fontSize = 11.sp)
+                Spacer(Modifier.height(16.dp))
+                Text("Freshness is an estimate unless confirmed from a label or user entry.", color = TextMuted, fontSize = 11.sp, lineHeight = 15.sp)
             }
         }
     }
@@ -462,7 +533,7 @@ private fun ScanScreen(inventory: List<FoodItem>, onBack: () -> Unit, onCapture:
                 Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("CAMERA SCAN", color = Teal, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 2.sp)
                     Spacer(Modifier.height(15.dp))
-                    Box(Modifier.fillMaxWidth().height(370.dp).background(Color(0xFF111B2C), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                    Box(Modifier.fillMaxWidth().height(370.dp).background(Mint, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(18.dp)) {
                             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { Text("🍅", fontSize = 38.sp); Text("🥬", fontSize = 38.sp); Text("🥛", fontSize = 38.sp) }
                             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) { Text("🍗", fontSize = 38.sp); Text("🧅", fontSize = 38.sp) }
@@ -594,7 +665,7 @@ private fun RecipesScreen(inventory: List<FoodItem>, onCook: (Recipe) -> Unit, o
             }, key = { it.name }) { recipe ->
                 CardBlock(Modifier.fillMaxWidth()) {
                     Column {
-                        Box(Modifier.fillMaxWidth().height(112.dp).background(Color(0xFF202B40), RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)), contentAlignment = Alignment.Center) {
+                        Box(Modifier.fillMaxWidth().height(112.dp).background(PaleGreen, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)), contentAlignment = Alignment.Center) {
                             Text(recipe.emoji, fontSize = 52.sp)
                         }
                         Column(Modifier.padding(14.dp)) {
@@ -644,7 +715,7 @@ private fun CookScreen(recipe: Recipe, step: Int, onBack: () -> Unit, onNext: ()
                 }
                 Spacer(Modifier.height(18.dp))
                 CardBlock(Modifier.fillMaxWidth()) {
-                    Box(Modifier.fillMaxWidth().height(180.dp).background(Color(0xFF111B2C), RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                    Box(Modifier.fillMaxWidth().height(180.dp).background(Mint, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("👨‍🍳", fontSize = 52.sp)
                             Text("Cooking workspace", color = TextMuted, fontSize = 12.sp)
@@ -742,13 +813,14 @@ private fun AppScaffold(
         bottomBar = {
             if (current != null) {
                 Column(Modifier.fillMaxWidth().background(Ink).windowInsetsPadding(WindowInsets.navigationBars)) {
-                    Divider(color = Color(0xFF29384F), thickness = 1.dp)
-                    Row(Modifier.fillMaxWidth().height(58.dp), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
+                    Divider(color = Border, thickness = 1.dp)
+                    Row(Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 4.dp),
+                        horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
                         NavItem("Home", "⌂", current == Destination.Home) { navigate(Destination.Home) }
-                        NavItem("Inventory", "▦", current == Destination.Inventory) { navigate(Destination.Inventory) }
-                        NavItem("Scan", "＋", current == Destination.Scan) { navigate(Destination.Scan) }
+                        NavItem("Fridge", "▦", current == Destination.Inventory) { navigate(Destination.Inventory) }
                         NavItem("Recipes", "◉", current == Destination.Recipes) { navigate(Destination.Recipes) }
-                        NavItem("More", "☰", current == Destination.More) { navigate(Destination.More) }
+                        NavItem("List", "☷", false) { navigate(Destination.Inventory) }
+                        NavItem("You", "●", current == Destination.More) { navigate(Destination.More) }
                     }
                 }
             }
@@ -759,8 +831,8 @@ private fun AppScaffold(
 @Composable
 private fun NavItem(label: String, icon: String, active: Boolean, onClick: () -> Unit) {
     Column(Modifier.width(64.dp).clickable(onClick = onClick).padding(vertical = 6.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(icon, color = if (active) RedSoft else TextMuted, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Text(label, color = if (active) RedSoft else TextMuted, fontSize = 9.sp, fontWeight = if (active) FontWeight.Bold else FontWeight.Normal)
+        Text(icon, color = if (active) Primary else TextMuted, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(label, color = if (active) Primary else TextMuted, fontSize = 10.sp, fontWeight = if (active) FontWeight.Bold else FontWeight.Normal)
     }
 }
 
@@ -787,7 +859,13 @@ private fun Stat(value: String, label: String, color: Color) {
 
 @Composable
 private fun CardBlock(modifier: Modifier = Modifier, color: Color = CardInk, content: @Composable () -> Unit) {
-    Card(modifier = modifier, shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = color), content = { content() })
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Border),
+        colors = CardDefaults.cardColors(containerColor = color),
+        content = { content() }
+    )
 }
 
 @Composable
@@ -798,7 +876,7 @@ private fun PrimaryButton(
     Button(
         onClick = onClick, modifier = modifier.fillMaxWidth().height(52.dp),
         enabled = enabled, shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = TextMain, disabledContainerColor = CardInk, disabledContentColor = TextMuted)
+        colors = ButtonDefaults.buttonColors(containerColor = Primary, contentColor = Color.White, disabledContainerColor = CardInk, disabledContentColor = TextMuted)
     ) {
         if (leadingIcon != null) { leadingIcon(); Spacer(Modifier.width(8.dp)) }
         Text(label, fontSize = 15.sp, fontWeight = FontWeight.Bold)
