@@ -22,9 +22,9 @@ concurrency:
 
 jobs:
   build:
-    name: Build iOS simulator app
+    name: Build iOS app and unsigned IPA
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,7 +34,44 @@ jobs:
           xcode-select -p
           xcodebuild -version
 
-      - name: Validate project and build
+      - name: Build for iPhone (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project app/iOS/Cam2Cook.xcodeproj \
+            -scheme Cam2Cook \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/Cam2CookDeviceDerived" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build | tee "$RUNNER_TEMP/cam2cook-device-build.log"
+
+      - name: Package unsigned IPA
+        run: |
+          set -euo pipefail
+          APP_PATH="$RUNNER_TEMP/Cam2CookDeviceDerived/Build/Products/Release-iphoneos/Cam2Cook.app"
+          test -d "$APP_PATH"
+          mkdir -p dist/ipa/Payload
+          cp -R "$APP_PATH" dist/ipa/Payload/Cam2Cook.app
+          (cd dist/ipa && zip -qry ../Cam2Cook-iOS-Unsigned.ipa Payload)
+          test -s dist/Cam2Cook-iOS-Unsigned.ipa
+          unzip -l dist/Cam2Cook-iOS-Unsigned.ipa
+          shasum -a 256 dist/Cam2Cook-iOS-Unsigned.ipa > dist/Cam2Cook-iOS-Unsigned.ipa.sha256
+
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cam2Cook-iOS-Unsigned-IPA-${{ github.run_number }}
+          path: |
+            dist/Cam2Cook-iOS-Unsigned.ipa
+            dist/Cam2Cook-iOS-Unsigned.ipa.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Build for iOS Simulator
         run: |
           set -o pipefail
           xcodebuild \
@@ -43,31 +80,34 @@ jobs:
             -configuration Release \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath "$RUNNER_TEMP/Cam2CookDerived" \
+            -derivedDataPath "$RUNNER_TEMP/Cam2CookSimulatorDerived" \
             CODE_SIGNING_ALLOWED=NO \
-            build | tee "$RUNNER_TEMP/cam2cook-build.log"
+            build | tee "$RUNNER_TEMP/cam2cook-simulator-build.log"
 
       - name: Package simulator app
         run: |
-          APP_PATH="$RUNNER_TEMP/Cam2CookDerived/Build/Products/Release-iphonesimulator/Cam2Cook.app"
+          set -euo pipefail
+          APP_PATH="$RUNNER_TEMP/Cam2CookSimulatorDerived/Build/Products/Release-iphonesimulator/Cam2Cook.app"
           test -d "$APP_PATH"
-          mkdir -p dist
-          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/Cam2Cook-iOS-Simulator.zip
-          shasum -a 256 dist/Cam2Cook-iOS-Simulator.zip > dist/SHA256SUMS.txt
+          mkdir -p dist/simulator
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" dist/simulator/Cam2Cook-iOS-Simulator.zip
+          shasum -a 256 dist/simulator/Cam2Cook-iOS-Simulator.zip > dist/simulator/SHA256SUMS.txt
 
-      - name: Upload downloadable simulator build
+      - name: Upload simulator app
         uses: actions/upload-artifact@v4
         with:
           name: Cam2Cook-iOS-Simulator-${{ github.run_number }}
-          path: dist/
+          path: dist/simulator/
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload build log on failure
+      - name: Upload build logs on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: Cam2Cook-iOS-build-log
-          path: ${{ runner.temp }}/cam2cook-build.log
+          name: Cam2Cook-iOS-build-logs
+          path: |
+            ${{ runner.temp }}/cam2cook-device-build.log
+            ${{ runner.temp }}/cam2cook-simulator-build.log
           if-no-files-found: ignore
           retention-days: 7
