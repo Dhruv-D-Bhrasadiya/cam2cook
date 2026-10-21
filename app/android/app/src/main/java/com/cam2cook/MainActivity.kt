@@ -196,7 +196,8 @@ private fun Cam2CookApp() {
                     },
                     message = message,
                     onMessageShown = { message = null },
-                    onSwitch = { destination = if (destination == Destination.Login) Destination.SignUp else Destination.Login }
+                    onSwitch = { destination = if (destination == Destination.Login) Destination.SignUp else Destination.Login },
+                    onForgotPassword = { destination = Destination.ForgotPassword }
                 )
                 Destination.ForgotPassword -> UtilityScreen(
                     title = "Reset password", subtitle = "Enter your email and we’ll show the next step.",
@@ -357,7 +358,8 @@ private fun AuthScreen(
     isSignUp: Boolean, email: String, onEmail: (String) -> Unit,
     password: String, onPassword: (String) -> Unit, name: String,
     onName: (String) -> Unit, onBack: () -> Unit, onSubmit: () -> Unit,
-    message: String?, onMessageShown: () -> Unit, onSwitch: () -> Unit
+    message: String?, onMessageShown: () -> Unit, onSwitch: () -> Unit,
+    onForgotPassword: () -> Unit
 ) {
     Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.Center) {
         IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextMain) }
@@ -383,7 +385,7 @@ private fun AuthScreen(
             Text(if (isSignUp) "Already have an account? Login" else "New here? Create an account", color = Teal)
         }
         if (!isSignUp) {
-            TextButton(onClick = { LocalAppNavigate.current(Destination.ForgotPassword) }, modifier = Modifier.fillMaxWidth()) {
+            TextButton(onClick = onForgotPassword, modifier = Modifier.fillMaxWidth()) {
                 Text("Forgot password?", color = Teal)
             }
         }
@@ -868,11 +870,12 @@ private fun MoreScreen(name: String, email: String, onBack: () -> Unit, onLogout
 @Composable
 private fun UtilityScreen(
     title: String, subtitle: String, primaryAction: String, onPrimary: () -> Unit,
+    onBack: () -> Unit = { },
     secondaryAction: String? = null, onSecondary: (() -> Unit)? = null,
     bullets: List<String> = emptyList(), fields: List<String> = emptyList()
 ) {
     Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.Top) {
-        IconButton(onClick = { LocalAppNavigate.current(Destination.More) }) {
+        IconButton(onClick = onBack) {
             Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextMain)
         }
         Spacer(Modifier.height(18.dp))
