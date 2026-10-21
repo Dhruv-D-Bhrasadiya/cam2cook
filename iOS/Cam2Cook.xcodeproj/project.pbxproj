@@ -1,0 +1,25 @@
+// !$*UTF8*$!
+{
+  archiveVersion = 1;
+  classes = {};
+  objectVersion = 56;
+  objects = {
+    A10000000000000000000001 = {isa = PBXBuildFile; fileRef = A10000000000000000000011; };
+    A10000000000000000000002 = {isa = PBXBuildFile; fileRef = A10000000000000000000012; };
+    A10000000000000000000011 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cam2CookApp.swift; sourceTree = "<group>"; };
+    A10000000000000000000012 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+    A10000000000000000000013 = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = Cam2Cook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+    A10000000000000000000020 = {isa = PBXGroup; children = (A10000000000000000000011, A10000000000000000000012,); path = Cam2Cook; sourceTree = "<group>"; };
+    A10000000000000000000021 = {isa = PBXGroup; children = (A10000000000000000000020, A10000000000000000000022,); sourceTree = "<group>"; };
+    A10000000000000000000022 = {isa = PBXGroup; children = (A10000000000000000000013,); name = Products; sourceTree = "<group>"; };
+    A10000000000000000000030 = {isa = PBXNativeTarget; buildConfigurationList = A10000000000000000000050; buildPhases = (A10000000000000000000040, A10000000000000000000041, A10000000000000000000042,); buildRules = (); dependencies = (); name = Cam2Cook; productName = Cam2Cook; productReference = A10000000000000000000013; productType = "com.apple.product-type.application"; };
+    A10000000000000000000040 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002,); runOnlyForDeploymentPostprocessing = 0; };
+    A10000000000000000000041 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+    A10000000000000000000042 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+    A10000000000000000000050 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000060, A10000000000000000000061,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+    A10000000000000000000060 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = ""; CODE_SIGNING_ALLOWED = NO; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = Cam2Cook; INFOPLIST_KEY_UIUserInterfaceStyle = Dark; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.dhruv.cam2cook; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+    A10000000000000000000061 = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = ""; CODE_SIGNING_ALLOWED = NO; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = Cam2Cook; INFOPLIST_KEY_UIUserInterfaceStyle = Dark; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.dhruv.cam2cook; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
+    A10000000000000000000070 = {isa = XCWorkspace; children = (); };
+  };
+  rootObject = A10000000000000000000021;
+}
