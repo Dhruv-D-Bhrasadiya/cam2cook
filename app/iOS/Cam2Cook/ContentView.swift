@@ -67,7 +67,7 @@ struct HomeView: View {
     private var greeting: some View {
         VStack(alignment: .leading, spacing: 7) {
             Text("TUESDAY, OCTOBER 21").font(.system(size: 11, weight: .bold)).tracking(1.5).foregroundStyle(Palette.lime)
-            Text("Your kitchen,\n").foregroundStyle(.white) + Text("in good hands.").foregroundStyle(Palette.lime)
+            Text("Your kitchen,\\nin good hands.").foregroundColor(.white)
             Text("Here's what's happening with your food today.").font(.subheadline).foregroundStyle(Palette.muted).padding(.top, 2)
         }.font(.system(size: 33, weight: .bold, design: .rounded))
     }
