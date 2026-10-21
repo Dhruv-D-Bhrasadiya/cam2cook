@@ -202,12 +202,14 @@ private fun Cam2CookApp() {
                 Destination.ForgotPassword -> UtilityScreen(
                     title = "Reset password", subtitle = "Enter your email and we’ll show the next step.",
                     primaryAction = "Send reset link", onPrimary = { destination = Destination.ResetSuccess },
+                    onBack = { destination = Destination.Login },
                     secondaryAction = "Back to sign in", onSecondary = { destination = Destination.Login },
                     fields = listOf("Email address")
                 )
                 Destination.ResetSuccess -> UtilityScreen(
                     title = "Check your inbox", subtitle = "If an account exists for that email, password-reset instructions will be sent when authentication is connected.",
-                    primaryAction = "Back to sign in", onPrimary = { destination = Destination.Login }
+                    primaryAction = "Back to sign in", onPrimary = { destination = Destination.Login },
+                    onBack = { destination = Destination.Login }
                 )
                 Destination.FoodDetail -> FoodDetailScreen(
                     item = inventory.firstOrNull() ?: starterFood.first(),
@@ -217,23 +219,27 @@ private fun Cam2CookApp() {
                 Destination.ShoppingList -> UtilityScreen(
                     title = "Shopping list", subtitle = "Keep a short list of ingredients to pick up.",
                     primaryAction = "Add sample essentials", onPrimary = { message = "Milk, eggs and fresh greens added to your demo list." },
+                    onBack = { destination = Destination.Home },
                     secondaryAction = "Back to home", onSecondary = { destination = Destination.Home },
                     bullets = listOf("Milk", "Eggs", "Fresh greens")
                 )
                 Destination.Notifications -> UtilityScreen(
                     title = "Notifications", subtitle = "Your kitchen reminders at a glance.",
                     primaryAction = "Mark all as read", onPrimary = { message = "Notifications marked as read." },
+                    onBack = { destination = Destination.More },
                     bullets = listOf("Use spinach today", "Milk is nearing its estimated date", "Your weekly kitchen summary is ready")
                 )
                 Destination.Household -> UtilityScreen(
                     title = "Your household", subtitle = "Share kitchen planning with people at home.",
                     primaryAction = "Create household", onPrimary = { message = "Household setup is ready to connect to an account service." },
+                    onBack = { destination = Destination.More },
                     secondaryAction = "Back to You", onSecondary = { destination = Destination.More },
                     bullets = listOf("Invite a partner or housemate", "Shared fridge and pantry", "One shopping list for everyone")
                 )
                 Destination.Settings -> UtilityScreen(
                     title = "Settings", subtitle = "Manage your Cam2Cook experience.",
                     primaryAction = "Save preferences", onPrimary = { message = "Preferences saved for this demo session." },
+                    onBack = { destination = Destination.More },
                     secondaryAction = "Back to You", onSecondary = { destination = Destination.More },
                     bullets = listOf("Freshness reminder preferences", "Measurement units · metric", "Privacy and data controls", "Food safety information")
                 )
