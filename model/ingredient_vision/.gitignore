@@ -1,0 +1,17 @@
+/data/*
+!/data/raw/
+!/data/processed/
+/data/raw/*
+/data/processed/*
+!/data/raw/.gitkeep
+!/data/processed/.gitkeep
+/checkpoints/*
+!/checkpoints/.gitkeep
+/exports/*
+!/exports/.gitkeep
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.mlmodel
+*.mlpackage/

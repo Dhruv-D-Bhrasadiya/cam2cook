@@ -1,0 +1,70 @@
+{
+  "datasets": {
+    "food101": {
+      "task": "classification",
+      "download": true,
+      "description": "Dish classification baseline only; not supported by the MVP detector training grid."
+    },
+    "fruits360": {
+      "task": "classification",
+      "download": true,
+      "description": "Isolated produce classification baseline only; not supported by the MVP detector training grid."
+    },
+    "grocery-store": {
+      "task": "classification",
+      "download": true,
+      "description": "Retail classification source; not supported by the MVP detector training grid."
+    },
+    "open-images": {
+      "task": "detection",
+      "download": true,
+      "prepare": true,
+      "sweep": true,
+      "classes": [
+        "Apple",
+        "Banana",
+        "Bread",
+        "Broccoli",
+        "Cabbage",
+        "Carrot",
+        "Cheese",
+        "Chicken",
+        "Cucumber",
+        "Egg",
+        "Fish",
+        "Grape",
+        "Lemon",
+        "Lettuce",
+        "Meat",
+        "Milk",
+        "Orange",
+        "Pear",
+        "Potato",
+        "Seafood",
+        "Strawberry",
+        "Tomato"
+      ],
+      "max_samples_per_split": 5000
+    },
+    "custom-yolo": {
+      "task": "detection",
+      "download": false,
+      "prepare": true,
+      "sweep": false,
+      "dataset_yaml": "data/raw/custom-yolo/dataset.yaml",
+      "description": "User-provided, licensed kitchen/grocery dataset in YOLO format."
+    }
+  },
+  "models": {
+    "yolov8n": "yolov8n.pt",
+    "yolo11n": "yolo11n.pt"
+  },
+  "hyperparameter_grid": {
+    "epochs": [30],
+    "imgsz": [416, 640],
+    "batch": [8, 16],
+    "lr0": [0.001, 0.01],
+    "weight_decay": [0.0005],
+    "patience": [10]
+  }
+}
